@@ -15,8 +15,8 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='your_name',
-    maintainer_email='your@email.com',
+    maintainer='Hakozaki Teruki',
+    maintainer_email='sinosaki@gmail.com',
     description='System health monitor example',
     license='BSD-3-Clause',
     entry_points={

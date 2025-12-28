@@ -5,13 +5,12 @@ def generate_launch_description():
     return LaunchDescription([
         Node(
             package='mypkg',
-            executable='system_health_monitor',
-            output='screen'
+            executable='talker',
+            name='talker'
         ),
         Node(
             package='mypkg',
-            executable='system_health_listener',
-            parameters=[{'log_path': '/tmp/system_health.csv'}],
-            output='screen'
+            executable='listener',
+            name='listener'
         ),
     ])
