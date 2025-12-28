@@ -37,11 +37,13 @@ jobs:
         shell: bash
         run: |
           source /opt/ros/humble/setup.bash
+          cd ros2_ws
           colcon build --symlink-install
 
       - name: Run tests
         shell: bash
         run: |
           source /opt/ros/humble/setup.bash
-          source install/setup.bash
+          source ros2_ws/install/setup.bash
+          cd ros2_ws/src/mypkg
           bash test.bash
