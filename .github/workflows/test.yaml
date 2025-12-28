@@ -16,37 +16,29 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Show Python version
-        run: python --version
+      - name: Install ROS 2 Humble
+        run: |
+          sudo apt update
+          sudo apt install -y curl gnupg lsb-release
+          sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key \
+            -o /usr/share/keyrings/ros-archive-keyring.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] \
+            http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" \
+            | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+          sudo apt update
+          sudo apt install -y ros-humble-ros-base python3-colcon-common-extensions
 
-      - name: Setup ROS 2 Humble
-        if: matrix.python-version == '3.10'
-        uses: ros-tooling/setup-ros@v0.7
-        with:
-          required-ros-distributions: humble
-
-      - name: Build workspace (ROS 2)
-        if: matrix.python-version == '3.10'
-        shell: bash
+      - name: Build workspace
         run: |
           source /opt/ros/humble/setup.bash
-          colcon build
+          colcon build --symlink-install
 
-      - name: Run tests (ROS 2)
-        if: matrix.python-version == '3.10'
-        shell: bash
+      - name: Run tests
         run: |
           source /opt/ros/humble/setup.bash
-          source install/setup.bash
           bash test.bash
-
-      - name: Python syntax check
-        if: matrix.python-version != '3.10'
-        run: |
-          python -m py_compile mypkg/system_health_monitor.py
-          python -m py_compile mypkg/system_health_listener.py
