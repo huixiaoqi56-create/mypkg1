@@ -17,7 +17,7 @@
 
 ## 使用方法
 
-### インストール方法
+### インストール
 
 - 以下の手順でインストールしてください。
 
@@ -27,43 +27,60 @@
 cd ~/ros2_ws/src
 git clone https://github.com/huixiaoqi56-create/mypkg1.git
 ```
-#### 2. ビルド
+### ビルド
 ```bash
 cd ~/ros2_ws
 colcon build --symlink-install
 source install/setup.bash
 ```
-#### 実行方法
-##### モニタノード
+### 実行方法
+#### モニタノード
 - 稼働時間とネットワーク状態を監視し，トピックに送信します。
 ```bash
 source ~/ros2_ws/install/setup.bash
 ros2 run mypkg system_health_monitor
 ```
-##### リスナノード
+#### リスナノード
 - 受信したデータを表示し，CSV ファイルとして自動保存します。
 ```bash
 source ~/ros2_ws/install/setup.bash
 ros2 run mypkg system_health_listener
 ```
 
-##### launch ファイル
+#### launch ファイル
 ```bash
 ros2 launch mypkg system_health.launch.py
 ```
-##### 実行例
+#### 実行例
 - モニタ側出力例
 ```
-[INFO] [system_health_monitor]: time=5s network=OK
-[INFO] [system_health_monitor]: time=6s network=OK
+[INFO] [1767056060.597950951] [system_health_monitor]: SystemHealthMonitor started
+[INFO] [1767056061.607781104] [system_health_monitor]: time=1s network=OK
+[INFO] [1767056062.599538834] [system_health_monitor]: time=2s network=OK
+[INFO] [1767056063.601983013] [system_health_monitor]: time=3s network=OK
+[INFO] [1767056064.601477438] [system_health_monitor]: time=4s network=OK
+[INFO] [1767056065.600307682] [system_health_monitor]: time=5s network=OK
+[INFO] [1767056066.600541314] [system_health_monitor]: time=6s network=OK
+
 ```
 - リスナ側出力例
 ```
-[INFO] [system_health_listener]: logged: 5,OK
-[INFO] [system_health_listener]: logged: 6,OK
+[INFO] [1767056064.318518573] [system_health_listener]: SystemHealthListener started, log=/tmp/system_health_log.csv
+[INFO] [1767056064.602282863] [system_health_listener]: uptime=4s net=True
+[INFO] [1767056065.600720977] [system_health_listener]: uptime=5s net=True
+[INFO] [1767056066.601213502] [system_health_listener]: uptime=6s net=True
+
 ```
 - launchファイル出力例
 ```
+[INFO] [system_health_monitor-1]: process started with pid [347728]
+[INFO] [system_health_listener-2]: process started with pid [347730]
+[system_health_listener-2] [INFO] [1767056287.068834439] [system_health_listener]: SystemHealthListener started, log=/tmp/system_health_log.csv
+[system_health_monitor-1] [INFO] [1767056287.070842722] [system_health_monitor]: SystemHealthMonitor started
+[system_health_monitor-1] [INFO] [1767056289.806589422] [system_health_monitor]: time=2s network=OK
+[system_health_listener-2] [INFO] [1767056289.807860252] [system_health_listener]: uptime=2s net=True
+[system_health_monitor-1] [INFO] [1767056290.076652404] [system_health_monitor]: time=3s network=OK
+[system_health_listener-2] [INFO] [1767056290.077386418] [system_health_listener]: uptime=3s net=True
 
 ```
 ### ログの確認方法
@@ -71,8 +88,6 @@ ros2 launch mypkg system_health.launch.py
 ```
 cat ~/ros2_ws/log/system_health.csv
 ```
-## 使用トピック
-- `/system_healthstd_msgs/String`稼働時間とネットワーク状態
 ## 必要なソフトウェア
 
 - ROS 2 Humble
